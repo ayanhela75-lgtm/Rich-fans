@@ -1,58 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rooms</title>
+</head>
+<body>
+    <h1>Rooms Management</h1>
+    <script>
+        const rooms = new Map();
 
-const rooms = new Map();
+        function generateRoomId() {
+            let id;
+            do {
+                id = String(Math.floor(100000 + Math.random() * 900000));
+            } while (rooms.has(id));
+            return id;
+        }
 
-function generateRoomId() {
-  let id;
-  do {
-    id = String(Math.floor(100000 + Math.random() * 900000));
-  } while (rooms.has(id));
-  return id;
-}
+        function createRoom(owner, title, password = "") {
+            const roomId = generateRoomId();
+            const room = {
+                id: roomId,
+                title,
+                owner,
+                password,
+                members: [owner],
+                maxMembers: 8,
+                createdAt: Date.now()
+            };
+            rooms.set(roomId, room);
+            return room;
+        }
 
-function createRoom(owner, title, password = "") {
-  const roomId = generateRoomId();
+        function joinRoom(roomId, username, password = "") {
+            const room = rooms.get(roomId);
+            if (!room) return { error: "Room not found" };
+            if (room.password !== password) return { error: "Incorrect password" };
+            if (room.members.length >= room.maxMembers) return { error: "Room is full" };
+            if (!room.members.includes(username)) {
+                room.members.push(username);
+            }
+            return room;
+        }
 
-  const room = {
-    id: roomId,
-    title,
-    owner,
-    password,
-    members: [owner],
-    maxMembers: 8,
-    createdAt: Date.now()
-  };
+        function leaveRoom(roomId, username) {
+            const room = rooms.get(roomId);
+            if (!room) return false;
+            room.members = room.members.filter(member => member !== username);
+            if (room.members.length === 0) {
+                rooms.delete(roomId);
+            }
+            return true;
+        }
+    </script>
+</body>
+</html>
 
-  rooms.set(roomId, room);
-  return room;
-}
-
-function joinRoom(roomId, username, password = "") {
-  const room = rooms.get(roomId);
-
-  if (!room) return { error: "Room not found" };
-  if (room.password !== password)
-    return { error: "Incorrect password" };
-  if (room.members.length >= room.maxMembers)
-    return { error: "Room is full" };
-
-  if (!room.members.includes(username)) {
-    room.members.push(username);
-  }
-
-  return room;
-}
-
-function leaveRoom(roomId, username) {
-  const room = rooms.get(roomId);
-  if (!room) return false;
-
-  room.members = room.members.filter(
-    member => member !== username
-  );
-
-  if (room.members.length === 0) {
-    rooms.delete(roomId);
-  }
-
-  return true;
-}
