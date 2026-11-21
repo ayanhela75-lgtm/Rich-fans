@@ -1,0 +1,71 @@
+
+const express = require("express");
+const http = require("http");
+const { Server } = require("socket.io");
+
+const app = express();
+const server = http.createServer(app);
+const io = new Server(server);
+
+app.use(express.static("public"));
+
+const rooms = new Map();
+const MAX_USERS = 8;
+
+io.on("connection", (socket) => {
+
+  socket.on("join-room", (roomId, callback) => {
+    if (!roomId || typeof roomId !== "string") {
+      return callback({ error: "Invalid room ID" });
+    }
+
+    const members = rooms.get(roomId) || new Set();
+
+    if (members.size >= MAX_USERS) {
+      return callback({ error: "Room is full" });
+    }
+
+    const existingUsers = [...members];
+
+    socket.join(roomId);
+    socket.data.roomId = roomId;
+    members.add(socket.id);
+    rooms.set(roomId, members);
+
+    callback({
+      success: true,
+      users: existingUsers
+    });
+
+    socket.to(roomId).emit("user-joined", {
+      id: socket.id
+    });
+  });
+
+  socket.on("signal", ({ to, data }) => {
+    const roomId = socket.data.roomId;
+    if (!roomId || !rooms.get(roomId)?.has(to)) return;
+
+    io.to(to).emit("signal", {
+      from: socket.id,
+      data
+    });
+  });
+
+  socket.on("disconnect", () => {
+    const roomId = socket.data.roomId;
+    if (!roomId) return;
+
+    const members = rooms.get(roomId);
+    if (members) {
+      members.delete(socket.id);
+      if (members.size === 0) rooms.delete(roomId);
+    }
+
+    socket.to(roomId).emit("user-left", socket.id);
+  });
+});
+
+server.listen(3000, () => {
+  console.log("RICH-FANS server running on port 3000");
+});
