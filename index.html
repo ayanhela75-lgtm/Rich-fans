@@ -1,0 +1,301 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RICH-FANS</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background: #faf9f5;
+  color: #29251b;
+  padding-bottom: 85px;
+}
+
+header {
+  background: white;
+  padding: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 10px #ddd;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: 900;
+  color: #c49a36;
+}
+
+.profile {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #d7b45a;
+  display: grid;
+  place-items: center;
+  color: white;
+  font-weight: bold;
+}
+
+.coins {
+  background: #fff5d9;
+  padding: 9px 13px;
+  border-radius: 20px;
+  color: #a77c19;
+  font-weight: bold;
+}
+
+.banner {
+  margin: 16px;
+  padding: 25px;
+  border-radius: 18px;
+  background: linear-gradient(120deg,#f4dfaa,#c49a36);
+  color: #392b0e;
+}
+
+.banner h1 {
+  font-size: 27px;
+  margin-bottom: 8px;
+}
+
+.banner button {
+  margin-top: 15px;
+  background: #fff;
+  border: none;
+  padding: 11px 20px;
+  border-radius: 20px;
+  font-weight: bold;
+}
+
+section {
+  padding: 15px;
+}
+
+.section-title {
+  font-size: 19px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.games {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 12px;
+}
+
+.game {
+  text-align: center;
+  background: white;
+  padding: 13px 4px;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px #eee;
+  cursor: pointer;
+}
+
+.game .emoji {
+  font-size: 30px;
+}
+
+.game p {
+  font-size: 12px;
+  margin-top: 7px;
+}
+
+.rooms {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.room {
+  background: white;
+  padding: 15px;
+  border-radius: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 8px #eee;
+}
+
+.room small {
+  color: #888;
+}
+
+.join {
+  background: #c49a36;
+  color: white;
+  border: none;
+  padding: 9px 16px;
+  border-radius: 18px;
+  font-weight: bold;
+}
+
+.event {
+  background: #fff;
+  padding: 17px;
+  border-radius: 15px;
+  border-left: 5px solid #c49a36;
+}
+
+nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: white;
+  display: flex;
+  justify-content: space-around;
+  padding: 13px 5px;
+  box-shadow: 0 -2px 10px #ddd;
+}
+
+nav button {
+  border: none;
+  background: none;
+  color: #777;
+  font-size: 12px;
+}
+
+nav button.active {
+  color: #b48a2d;
+  font-weight: bold;
+}
+
+nav span {
+  display: block;
+  font-size: 21px;
+  margin-bottom: 4px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">♛ RICH-FANS</div>
+  <div class="profile">
+    <div class="coins">🪙 10,000</div>
+    <div class="avatar">R</div>
+  </div>
+</header>
+
+<div class="banner">
+  <h1>WELCOME TO RICH-FANS</h1>
+  <p>Play Together • Make Friends • Have Fun</p>
+  <button onclick="showMessage('Welcome to RICH-FANS!')">
+    Explore Now
+  </button>
+</div>
+
+<section>
+  <div class="section-title">🎮 Popular Games</div>
+  <div class="games">
+    <div class="game" onclick="play('Ludo')">
+      <div class="emoji">🎲</div><p>Ludo</p>
+    </div>
+    <div class="game" onclick="play('UNO')">
+      <div class="emoji">🃏</div><p>UNO</p>
+    </div>
+    <div class="game" onclick="play('Domino')">
+      <div class="emoji">🁣</div><p>Domino</p>
+    </div>
+    <div class="game" onclick="play('Quiz')">
+      <div class="emoji">🧠</div><p>Quiz</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-title">🎤 Voice Rooms</div>
+  <div class="rooms">
+    <div class="room">
+      <div>
+        <b>👑 VIP Party Room</b><br>
+        <small>🎙 12 people online</small>
+      </div>
+      <button class="join" onclick="joinRoom('VIP Party Room')">JOIN</button>
+    </div>
+
+    <div class="room">
+      <div>
+        <b>💛 Friendship Club</b><br>
+        <small>🎙 8 people online</small>
+      </div>
+      <button class="join" onclick="joinRoom('Friendship Club')">JOIN</button>
+    </div>
+
+    <div class="room">
+      <div>
+        <b>🔥 RICH-FANS Lounge</b><br>
+        <small>🎙 20 people online</small>
+      </div>
+      <button class="join" onclick="joinRoom('RICH-FANS Lounge')">JOIN</button>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-title">🏆 Special Events</div>
+  <div class="event">
+    <h3>👑 RICH-FANS Weekly Event</h3>
+    <p>Join our community event and enjoy multiplayer games!</p>
+    <br>
+    <button class="join" onclick="showMessage('Event coming soon!')">
+      View Event
+    </button>
+  </div>
+</section>
+
+<nav>
+  <button class="active" onclick="navigate('Home')">
+    <span>🏠</span>Home
+  </button>
+  <button onclick="navigate('Games')">
+    <span>🎮</span>Games
+  </button>
+  <button onclick="navigate('Rooms')">
+    <span>🎤</span>Rooms
+  </button>
+  <button onclick="navigate('Events')">
+    <span>🏆</span>Events
+  </button>
+  <button onclick="navigate('Profile')">
+    <span>👤</span>Profile
+  </button>
+</nav>
+
+<script>
+function showMessage(message) {
+  alert(message);
+}
+
+function play(game) {
+  alert(game + ' game is coming soon!');
+}
+
+function joinRoom(room) {
+  alert('Joining ' + room + ' - Voice chat coming soon!');
+}
+
+function navigate(page) {
+  alert(page + ' page coming soon!');
+}
+</script>
+
+</body>
+</html>
